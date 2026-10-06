@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CYBERNEURON // Next-Gen Human-Machine Augmentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #030508;
+      --card-bg: rgba(7, 12, 22, 0.75);
+      --neon-cyan: #00f3ff;
+      --neon-amber: #ff9d00;
+      --neon-crimson: #ff0055;
+      --border-dim: rgba(0, 243, 255, 0.2);
+      --border-bright: rgba(0, 243, 255, 0.7);
+      --font-display: 'Orbitron', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: #d1e2f5;
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    /* Ambient Neural Network Background */
+    #neural-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* Cybernetic Scanlines */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%),
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background-size: 100% 4px, 4px 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header & Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-dim);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--neon-cyan);
+      background: rgba(0, 243, 255, 0.08);
+      position: relative;
+      display: grid;
+      place-items: center;
+      clip-path: polygon(0 0, 75% 0, 100% 25%, 100% 100%, 25% 100%, 0 75%);
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--neon-cyan);
+      stroke-width: 2;
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 2px;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .brand-text p {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    nav a {
+      color: #8ba2bf;
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+    }
+
+    /* Cyber Buttons */
+    .btn-cyber {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 26px;
+      background: transparent;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      clip-path: polygon(0 0, 90% 0, 100% 30%, 100% 100%, 10% 100%, 0 70%);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-cyber:hover {
+      background: var(--neon-cyan);
+      color: #030508;
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-cyber.crimson {
+      border-color: var(--neon-crimson);
+      color: var(--neon-crimson);
+    }
+
+    .btn-cyber.crimson:hover {
+      background: var(--neon-crimson);
+      color: #fff;
+      box-shadow: 0 0 30px rgba(255, 0, 85, 0.6);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 85vh;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 40px;
+      padding: 60px 0;
+    }
+
+    .badge-hud {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 14px;
+      background: rgba(0, 243, 255, 0.06);
+      border: 1px solid var(--border-dim);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-cyan);
+      margin-bottom: 24px;
+      letter-spacing: 1.5px;
+    }
+
+    .badge-pulse {
+      width: 8px;
+      height: 8px;
+      background: #00ff88;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00ff88;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      line-height: 1.05;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    .hero-title span {
+      background: linear-gradient(90deg, var(--neon-cyan), #7c3aed, var(--neon-crimson));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 35px rgba(0, 243, 255, 0.35));
+    }
+
+    .hero-sub {
+      font-size: 1.25rem;
+      color: #9cb1cf;
+      margin: 24px 0 38px;
+      max-width: 600px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    /* Live Telemetry Bar */
+    .telemetry-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .telemetry-item {
+      font-family: var(--font-mono);
+    }
+
+    .telemetry-val {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .telemetry-val span {
+      color: var(--neon-cyan);
+      font-size: 1.2rem;
+    }
+
+    .telemetry-lbl {
+      font-size: 0.72rem;
+      color: #7b8d9f;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Interactive Holographic Cyborg Scanner */
+    .cyborg-hologram {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border-dim);
+      padding: 30px;
+      clip-path: polygon(0 0, 85% 0, 100% 15%, 100% 100%, 15% 100%, 0 85%);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(0, 243, 255, 0.05);
+    }
+
+    .hologram-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-dim);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+    }
+
+    .scanner-viewport {
+      width: 100%;
+      height: 240px;
+      margin: 20px 0;
+      position: relative;
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      background: radial-gradient(circle at center, rgba(0, 243, 255, 0.08) 0%, rgba(3, 5, 8, 0.8) 75%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cyborg-schematic {
+      width: 180px;
+      height: 180px;
+      position: relative;
+    }
+
+    .schematic-circle {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px dashed rgba(0, 243, 255, 0.35);
+      animation: spinRings 12s linear infinite;
+    }
+
+    .schematic-circle.inner {
+      inset: 24px;
+      border: 1px solid rgba(255, 0, 85, 0.5);
+      animation: spinRingsReverse 8s linear infinite;
+    }
+
+    @keyframes spinRings {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes spinRingsReverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+
+    .laser-beam {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      box-shadow: 0 0 12px var(--neon-cyan);
+      animation: laserSweep 3s ease-in-out infinite;
+    }
+
+    @keyframes laserSweep {
+      0%, 100% { top: 5%; }
+      50% { top: 95%; }
+    }
+
+    .hud-console {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 16px;
+      border-left: 2px solid var(--neon-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .console-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .console-row:last-child { margin-bottom: 0; }
+    .console-val { color: #fff; font-weight: 700; }
+
+    /* Augmentation Modules Section */
+    .section-wrap {
+      padding: 90px 0;
+    }
+
+    .section-header {
+      margin-bottom: 46px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px;
+      border: 1px solid var(--border-dim);
+    }
+
+    .pill-btn {
+      padding: 8px 18px;
+      background: transparent;
+      border: none;
+      color: #8da4c2;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      transition: all 0.2s;
+    }
+
+    .pill-btn.active, .pill-btn:hover {
+      background: var(--neon-cyan);
+      color: #030508;
+      font-weight: 700;
+    }
+
+    /* Module Grid */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 26px;
+    }
+
+    .module-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-dim);
+      padding: 30px;
+      position: relative;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      clip-path: polygon(0 0, 92% 0, 100% 8%, 100% 100%, 8% 100%, 0 92%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .module-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-bright);
+      box-shadow: 0 15px 40px rgba(0, 243, 255, 0.15);
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--neon-cyan);
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+
+    .card-meta .status {
+      color: var(--neon-amber);
+      font-weight: 700;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      font-size: 1rem;
+      color: #9cb1cf;
+      line-height: 1.55;
+      margin-bottom: 24px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .card-footer a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .card-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Diagnostics Interactive Section */
+    .diagnostics-panel {
+      background: linear-gradient(180deg, rgba(12, 19, 36, 0.7) 0%, rgba(4, 7, 14, 0.95) 100%);
+      border: 1px solid var(--border-dim);
+      padding: 40px;
+      margin-top: 40px;
+      position: relative;
+    }
+
+    .diag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 28px;
+    }
+
+    .diag-item {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      padding: 22px;
+      position: relative;
+    }
+
+    .diag-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-bg {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      margin: 12px 0 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-crimson));
+      width: 78%;
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .diag-status {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #8da4c2;
+    }
+
+    /* Calibration Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 500;
+      display: none;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: grid;
+    }
+
+    .modal-box {
+      background: #080c16;
+      border: 1px solid var(--neon-cyan);
+      width: 100%;
+      max-width: 520px;
+      padding: 36px;
+      clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 10% 100%, 0 90%);
+      box-shadow: 0 0 60px rgba(0, 243, 255, 0.2);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .modal-form label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--neon-cyan);
+      margin: 16px 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .modal-form input, .modal-form select {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .modal-form input:focus, .modal-form select:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 0;
+      margin-top: 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #6d809a;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 30px;
+      }
+      .telemetry-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Neural Net Canvas & Scanlines -->
+  <canvas id="neural-canvas"></canvas>
+  <div class="scanlines"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+            <path d="M2 17l10 5 10-5"></path>
+            <path d="M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>CYBERNEURON</h1>
+          <p>AUGMENTATION PROTOCOL // V8.4</p>
+        </div>
+      </a>
+
+      <nav>
+        <a href="#modules" class="active">MODULES</a>
+        <a href="#diagnostics">DIAGNOSTICS</a>
+        <a href="#specs">NEURAL SPEC</a>
+      </nav>
+
+      <div>
+        <button class="btn-cyber" onclick="openModal()">INITIATE LINK</button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="hero">
+      <div>
+        <div class="badge-hud">
+          <div class="badge-pulse"></div>
+          <span>NEURAL SYNAPSE ONLINE // LATENCY: 0.42MS</span>
+        </div>
+
+        <h1 class="hero-title">
+          Evolve Beyond<br>
+          <span>Organic Limits</span>
+        </h1>
+
+        <p class="hero-sub">
+          Synthesizing biological cognition with low-latency cybernetic hardware. Seamless direct-brain interfaces, synthetic biomechanical prosthetics, and cognitive co-processors.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-cyber" onclick="openModal()">CALIBRATE SYNAPSE</button>
+          <a href="#modules" class="btn-cyber crimson">VIEW AUGMENTS</a>
+        </div>
+
+        <div class="telemetry-bar">
+          <div class="telemetry-item">
+            <div class="telemetry-val">100<span>Gb/s</span></div>
+            <div class="telemetry-lbl">Synaptic Bandwidth</div>
+          </div>
+          <div class="telemetry-item">
+            <div class="telemetry-val">0.42<span>ms</span></div>
+            <div class="telemetry-lbl">Neural Latency</div>
+          </div>
+          <div class="telemetry-item">
+            <div class="telemetry-val">99.9<span>%</span></div>
+            <div class="telemetry-lbl">Biocompatibility</div>
+          </div>
+          <div class="telemetry-item">
+            <div class="telemetry-val">128<span>K</span></div>
+            <div class="telemetry-lbl">Active Nodes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Holographic Interactive Cyborg Scanner -->
+      <div class="cyborg-hologram">
+        <div class="hologram-head">
+          <span>// SYNAPTIC TELEMETRY</span>
+          <span>SUB-DERMAL SCAN</span>
+        </div>
+
+        <div class="scanner-viewport">
+          <div class="laser-beam"></div>
+          <div class="cyborg-schematic">
+            <div class="schematic-circle"></div>
+            <div class="schematic-circle inner"></div>
+            <svg style="position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; fill: none; stroke: var(--neon-cyan); stroke-width: 1.5;" viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+              <line x1="12" y1="14" x2="12" y2="22"></line>
+              <line x1="8" y1="18" x2="16" y2="18"></line>
+            </svg>
+          </div>
+        </div>
+
+        <div class="hud-console">
+          <div class="console-row">
+            <span>INTERFACE MODE</span>
+            <span class="console-val" style="color: #00ff88;">BI-DIRECTIONAL MESH</span>
+          </div>
+          <div class="console-row">
+            <span>NEURAL ENCRYPTION</span>
+            <span class="console-val">QUANTUM SHA-512</span>
+          </div>
+          <div class="console-row">
+            <span>INTEGRITY STATUS</span>
+            <span class="console-val" style="color: var(--neon-cyan);">NOMINAL (100%)</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modules Section -->
+    <section class="section-wrap" id="modules">
+      <div class="section-header">
+        <div>
+          <div class="section-tag">// AUGMENTATION PROTOCOLS</div>
+          <h2 class="section-heading">HARDWARE SUBSYSTEMS</h2>
+        </div>
+
+        <div class="filter-pills">
+          <button class="pill-btn active" onclick="filterModules('all')">ALL</button>
+          <button class="pill-btn" onclick="filterModules('neural')">NEURAL</button>
+          <button class="pill-btn" onclick="filterModules('bionic')">BIONIC</button>
+          <button class="pill-btn" onclick="filterModules('sensory')">SENSORY</button>
+        </div>
+      </div>
+
+      <div class="module-grid" id="module-container">
+        <!-- Card 1 -->
+        <div class="module-card" data-cat="neural">
+          <div>
+            <div class="card-meta">
+              <span>CORTEX INTERFACE</span>
+              <span class="status">TIER-1 SPEC</span>
+            </div>
+            <h3 class="card-title">Synapse-Link V4</h3>
+            <p class="card-desc">
+              High-density micro-electrode lattice capable of sub-millisecond signal translation between cerebral motor cortex and cybernetic peripherals.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span>BANDWIDTH: 100Gb/s</span>
+            <a href="#" onclick="openModal(); return false;">ACQUIRE PROTOCOL &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="module-card" data-cat="bionic">
+          <div>
+            <div class="card-meta">
+              <span>BIOMECHANICAL</span>
+              <span class="status">TITANIUM-CARBON</span>
+            </div>
+            <h3 class="card-title">Exo-Strut Chassis</h3>
+            <p class="card-desc">
+              Reinforced carbon-nanotube exoskeleton chassis with integrated hydraulic dampeners, expanding lifting capacity by 800% with zero muscular strain.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span>CAPACITY: 450KG</span>
+            <a href="#" onclick="openModal(); return false;">ACQUIRE PROTOCOL &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="module-card" data-cat="sensory">
+          <div>
+            <div class="card-meta">
+              <span>OPTICAL AUGMENT</span>
+              <span class="status">FULL SPECTRUM</span>
+            </div>
+            <h3 class="card-title">Ocular Retina HUD</h3>
+            <p class="card-desc">
+              Sub-retinal projection matrix offering multi-band infrared, thermal night-vision, and real-time biometric telemetry overlays.
+            </p>
+          </div>
+          <div class="card-footer">
+            <span>REFRESH: 240HZ</span>
+            <a href="#" onclick="openModal(); return false;">ACQUIRE PROTOCOL &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diagnostics Panel -->
+    <section class="section-wrap" id="diagnostics">
+      <div class="section-header">
+        <div>
+          <div class="section-tag">// LIVE SYSTEM STATUS</div>
+          <h2 class="section-heading">SUBSYSTEM TELEMETRY</h2>
+        </div>
+      </div>
+
+      <div class="diagnostics-panel">
+        <p style="color: #9cb1cf; max-width: 720px; font-size: 1.05rem;">
+          Continuous real-time diagnostics monitoring thermal output, neural strain, and bi-directional signal continuity across all linked cybernetic subroutines.
+        </p>
+
+        <div class="diag-grid">
+          <div class="diag-item">
+            <div class="diag-name">Synaptic Signal Flow</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 94%;"></div>
+            </div>
+            <div class="diag-status">
+              <span>LATENCY: OPTIMAL</span>
+              <span>94%</span>
+            </div>
+          </div>
+
+          <div class="diag-item">
+            <div class="diag-name">Biocompatible Rejection</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 2%; background: #00ff88; box-shadow: 0 0 10px #00ff88;"></div>
+            </div>
+            <div class="diag-status">
+              <span>RATE: ZERO REJECTION</span>
+              <span>0.02%</span>
+            </div>
+          </div>
+
+          <div class="diag-item">
+            <div class="diag-name">Thermal Nanotube Dissipation</div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: 42%; background: var(--neon-amber); box-shadow: 0 0 10px var(--neon-amber);"></div>
+            </div>
+            <div class="diag-status">
+              <span>CORE TEMP: 37.1°C</span>
+              <span>42%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        &copy; 2026 CYBERNEURON AUGMENTATION CORP. ALL RIGHTS RESERVED.
+      </div>
+      <div>
+        SECURE LINK // 128-BIT NEURAL ENCRYPTION ACTIVE
+      </div>
+    </footer>
+  </div>
+
+  <!-- Calibration Modal -->
+  <div class="modal-overlay" id="linkModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="section-tag">// SECURE UPLINK</div>
+      <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #fff; margin-bottom: 12px;">INITIATE NEURAL SYNC</h3>
+      
+      <form class="modal-form" onsubmit="handleLink(event)">
+        <label>Operator Codename</label>
+        <input type="text" required placeholder="NEXUS-07">
+
+        <label>Secure Communication Node (Email)</label>
+        <input type="email" required placeholder="operator@cyberneuron.net">
+
+        <label>Select Augmentation Track</label>
+        <select required>
+          <option>Synapse-Link V4 (Cerebral Cortex)</option>
+          <option>Exo-Strut Chassis (Biomechanical)</option>
+          <option>Ocular Retina HUD (Sensory Multi-Band)</option>
+        </select>
+
+        <div style="margin-top: 24px;">
+          <button type="submit" class="btn-cyber" style="width: 100%;">ESTABLISH CONNECTION</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Neural Net 2D Canvas Animation
+    const canvas = document.getElementById('neural-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      initGraph();
+    });
+
+    const particles = [];
+    const NUM_PARTICLES = 65;
+
+    function initGraph() {
+      particles.length = 0;
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.8,
+          vy: (Math.random() - 0.5) * 0.8,
+          r: Math.random() * 2 + 1
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 140) {
+            ctx.strokeStyle = `rgba(0, 243, 255, ${0.22 * (1 - dist / 140)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (let p of particles) {
+        ctx.fillStyle = '#00f3ff';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    initGraph();
+    animate();
+
+    // Module Filtering
+    function filterModules(category) {
+      const btns = document.querySelectorAll('.pill-btn');
+      btns.forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const cards = document.querySelectorAll('.module-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-cat') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Modal Control
+    const modal = document.getElementById('linkModal');
+    function openModal() {
+      modal.classList.add('active');
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    function handleLink(e) {
+      e.preventDefault();
+      alert('Neural synchronization request submitted! Diagnostics sequence initiating.');
+      closeModal();
+    }
+  </script>
+</body>
+</html>
